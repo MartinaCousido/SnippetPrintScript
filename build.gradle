@@ -1,0 +1,56 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.1.1'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.snippetsearcher'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(25)
+	}
+}
+
+repositories {
+	mavenCentral()
+	// La librería de PrintScript se publica en GitHub Packages. Bajarla pide un
+	// token classic con read:packages, aunque el repo sea público.
+	// En local se toma de ~/.gradle/gradle.properties (gpr.user y gpr.key);
+	// en el CI y en Docker, de la variable PACKAGES_TOKEN. Nunca se commitea.
+	maven {
+		url = 'https://maven.pkg.github.com/MartinaCousido/PrintScript'
+		credentials {
+			username = providers.gradleProperty('gpr.user')
+					.orElse(providers.environmentVariable('PACKAGES_USER'))
+					.getOrElse('MartinaCousido')
+			password = providers.gradleProperty('gpr.key')
+					.orElse(providers.environmentVariable('PACKAGES_TOKEN'))
+					.getOrNull()
+		}
+		content {
+			includeGroup 'org.printscript'
+		}
+	}
+}
+
+dependencies {
+	implementation 'org.printscript:runner:0.3.0'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	testImplementation 'org.springframework.boot:spring-boot-starter-actuator-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// Solo se genera el jar ejecutable de Spring Boot (bootJar), no el jar "plain":
+// el Dockerfile copia el único jar que queda en build/libs.
+tasks.named('jar') {
+	enabled = false
+}
