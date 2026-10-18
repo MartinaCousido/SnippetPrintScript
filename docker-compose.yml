@@ -1,0 +1,20 @@
+# Levanta solo el servicio de PrintScript. No tiene base de datos.
+# Uso: cp .env.example .env (y poner el token) && docker compose up --build
+#
+# El nombre de proyecto es el mismo en todos los compose del sistema: así los
+# contenedores son los mismos se levante un servicio solo o todo.
+name: snippet-searcher
+
+services:
+  printscript-service:
+    build:
+      context: .
+      secrets:
+        - packages_token
+    ports:
+      - "8083:8080"
+
+secrets:
+  # Token classic con read:packages, para bajar la librería al armar la imagen.
+  packages_token:
+    environment: PACKAGES_TOKEN
