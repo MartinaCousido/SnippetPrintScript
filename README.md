@@ -61,6 +61,12 @@ Cada diagnóstico:
 
 Versiones soportadas: `1.0` y `1.1`.
 
+## Observabilidad (New Relic)
+
+El agente Java de New Relic (`9.5.0`) va en la imagen, igual que en Snippet Service: manda métricas, traces y los logs del servicio. Cada pedido lleva en el contexto de los logs (MDC) el `requestId` que manda Snippet Service (`X-Request-Id`) y el servicio. Cada operación (validar, lintear, formatear y ejecutar) queda en el log con la versión, el resultado y cuánto tardó; nunca el código del snippet. Ver **Observabilidad (New Relic)** en [Decisiones técnicas](https://github.com/MartinaCousido/SnippetSearcher#decisiones-técnicas).
+
+En local el agente viene apagado. Para mandar datos, se levanta con `NEW_RELIC_AGENT_ENABLED=true` y `NEW_RELIC_LICENSE_KEY` (la de `SnippetSearcher-infra/newrelic/.env`), y aparece como `printscript-service (local)`.
+
 ## Stack
 
 **Java 25 + Spring Boot 4.1.1 + Gradle 9.8**, como los otros servicios. No tiene base de datos.

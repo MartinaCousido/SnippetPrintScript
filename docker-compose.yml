@@ -13,6 +13,11 @@ services:
         - packages_token
     ports:
       - "8083:8080"
+    environment:
+      # New Relic (#9): apagado en local, salvo que se pase la license key.
+      NEW_RELIC_AGENT_ENABLED: ${NEW_RELIC_AGENT_ENABLED:-false}
+      NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY:-}
+      NEW_RELIC_APP_NAME: printscript-service (local)
 
 secrets:
   # Token classic con read:packages, para bajar la librería al armar la imagen.
