@@ -41,6 +41,7 @@ Contrato definido en [Decisiones técnicas](https://github.com/MartinaCousido/Sn
 | Operación | Endpoint | Respuesta | User story |
 |---|---|---|---|
 | Validar | `POST /validate` con `{ "code": "...", "version": "1.1" }` | **200** con `{ "diagnostics": [...] }`. Lista vacía = válido. **400** si falta un campo o la versión no existe | US-1, US-2 |
+| Ejecutar | `POST /evaluate` con `{ "code": "...", "version": "1.1", "inputs": ["Ana", "true"] }` | **200** con `{ "outputs": [...], "diagnostics": [...] }`: lo que imprimió cada `println`, en orden. Cada `readInput` toma el siguiente input, y su texto no cuenta como output. Si la ejecución falla (por ejemplo, se acaban los inputs), el error va en `diagnostics` y `outputs` tiene lo que alcanzó a imprimir. **400** si falta un campo o la versión no existe | US-8, US-16 |
 
 Cada diagnóstico:
 
