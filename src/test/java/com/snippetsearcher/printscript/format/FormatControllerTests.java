@@ -46,6 +46,19 @@ class FormatControllerTests {
 				.andExpect(jsonPath("$.diagnostics", empty()));
 	}
 
+	// Desde la librería 0.3.1: el cuerpo de un if escrito en una línea baja de
+	// línea y se indenta, y el else queda al lado del '}'.
+	@Test
+	void withTheDefaultRulesItFormatsAnIfWrittenInOneLine() throws Exception {
+		format("""
+				{"code": "const m:boolean=true;if(m){println(\\"si\\");}else{println(\\"no\\");}", "version": "1.1", "rules": %s}
+				""".formatted(DEFAULTS))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content").value(
+						"const m: boolean = true;\nif(m) {\n    println(\"si\");\n} else {\n    println(\"no\");\n}"))
+				.andExpect(jsonPath("$.diagnostics", empty()));
+	}
+
 	@Test
 	void withoutRulesTheCodeIsTheSame() throws Exception {
 		format("""

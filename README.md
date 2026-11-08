@@ -19,7 +19,7 @@ Servicio de PrintScript de [Snippet Searcher](https://github.com/MartinaCousido/
 Este repo **no tiene el código del lenguaje**. Usa la librería [PrintScript](https://github.com/MartinaCousido/PrintScript), publicada en GitHub Packages:
 
 ```groovy
-implementation 'org.printscript:runner:0.3.0'
+implementation 'org.printscript:runner:0.3.1'
 ```
 
 Gradle la baja ya compilada al construir el servicio, igual que Spring Boot. Para usar una versión nueva, primero se publica en el repo PrintScript y después se cambia el número acá, con un PR.
