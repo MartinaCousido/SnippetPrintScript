@@ -9,6 +9,8 @@ import org.printscript.common.Version;
 import org.printscript.runner.ExecutionRunner;
 import org.printscript.runtime.OutputPrinter;
 import org.printscript.runtime.RuntimePorts;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.snippetsearcher.printscript.diagnostic.Diagnostic;
@@ -18,6 +20,8 @@ import com.snippetsearcher.printscript.diagnostic.Diagnostic;
 // explique la cátedra.
 @Service
 public class EvaluationService {
+
+	private static final Logger log = LoggerFactory.getLogger(EvaluationService.class);
 
 	private final ExecutionRunner runner = new ExecutionRunner();
 
@@ -33,7 +37,10 @@ public class EvaluationService {
 				// Los snippets no leen variables de entorno.
 				name -> Optional.empty());
 		// La librería recibe el código línea por línea, sin los saltos de línea.
+		long start = System.nanoTime();
 		runner.run(code.lines().iterator(), ports, version, failure -> diagnostics.add(Diagnostic.from(failure)));
+		log.info("ejecutar {} con {} inputs: {} outputs y {} errores en {} ms", version, inputs.size(), outputs.size(),
+				diagnostics.size(), (System.nanoTime() - start) / 1_000_000);
 		return new EvaluateResponse(outputs, diagnostics);
 	}
 
