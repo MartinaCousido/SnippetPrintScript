@@ -42,6 +42,9 @@ Contrato definido en [Decisiones técnicas](https://github.com/MartinaCousido/Sn
 |---|---|---|---|
 | Validar | `POST /validate` con `{ "code": "...", "version": "1.1" }` | **200** con `{ "diagnostics": [...] }`. Lista vacía = válido. **400** si falta un campo o la versión no existe | US-1, US-2 |
 | Ejecutar | `POST /evaluate` con `{ "code": "...", "version": "1.1", "inputs": ["Ana", "true"] }` | **200** con `{ "outputs": [...], "diagnostics": [...] }`: lo que imprimió cada `println`, en orden. Cada `readInput` toma el siguiente input, y su texto no cuenta como output. Si la ejecución falla (por ejemplo, se acaban los inputs), el error va en `diagnostics` y `outputs` tiene lo que alcanzó a imprimir. **400** si falta un campo o la versión no existe | US-8, US-16 |
+| Reglas | `GET /rules` | **200** con `{ "lint": [...], "format": [...] }`: cada regla con `name`, `type` (`boolean`, `text` o `number`), `options` (solo las de texto), `opposite` (la regla contraria, si tiene) y `default` (`{ isActive, value }`). Los valores por defecto los decide el proyecto: la librería no trae ninguno | US-11, US-14 |
+| Lintear | `POST /lint` con `{ "code", "version", "rules": { "identifier_format": "camel case", ... } }`, solo las reglas activas | **200** con `{ "diagnostics": [...] }`: cada regla incumplida. **400** si un valor no sirve o la versión no existe | US-14, US-15 |
+| Formatear | `POST /format` con `{ "code", "version", "rules": { ... } }` | **200** con `{ "content": "...", "diagnostics": [] }`. Si el formateador falla (`UNKNOWN_SYMBOL`, `SPACING_TOO_LARGE`), `content` es el código sin cambios y el error va en `diagnostics`. **400** si un valor no sirve o la versión no existe | US-11, US-12 |
 
 Cada diagnóstico:
 
