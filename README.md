@@ -19,7 +19,7 @@ Servicio de PrintScript de [Snippet Searcher](https://github.com/MartinaCousido/
 Este repo **no tiene el código del lenguaje**. Usa la librería [PrintScript](https://github.com/MartinaCousido/PrintScript), publicada en GitHub Packages:
 
 ```groovy
-implementation 'org.printscript:runner:0.3.1'
+implementation 'org.printscript:runner:0.3.2'
 ```
 
 Gradle la baja ya compilada al construir el servicio, igual que Spring Boot. Para usar una versión nueva, primero se publica en el repo PrintScript y después se cambia el número acá, con un PR.
@@ -46,6 +46,7 @@ Contrato definido en [Decisiones técnicas](https://github.com/MartinaCousido/Sn
 | Lintear | `POST /lint` con `{ "code", "version", "rules": { "identifier_format": "camel case", ... } }`, solo las reglas activas | **200** con `{ "diagnostics": [...] }`: cada regla incumplida. **400** si un valor no sirve o la versión no existe | US-14, US-15 |
 | Formatear | `POST /format` con `{ "code", "version", "rules": { ... } }` | **200** con `{ "content": "...", "diagnostics": [] }`. Si el formateador falla (`UNKNOWN_SYMBOL`, `SPACING_TOO_LARGE`), `content` es el código sin cambios y el error va en `diagnostics`. **400** si un valor no sirve o la versión no existe | US-11, US-12 |
 | Ejecutar en vivo | WebSocket `/execute` | Ver abajo | US-9, US-10 |
+| Versión de la librería | `GET /version` | **200** con `{ "library": "0.3.2" }`, leída del manifest del jar de la librería (`Implementation-Version`). Snippet Service la pregunta cada 10 minutos y, si cambió, vuelve a validar todos los snippets (SnippetSearcher#93) | — |
 
 ### Ejecutar en vivo (WebSocket `/execute`)
 
