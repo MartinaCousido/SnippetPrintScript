@@ -109,6 +109,18 @@ No necesitan base de datos. Con el token en `~/.gradle/gradle.properties`:
 
 En cada PR hacia `dev` o `main`, el CI (`.github/workflows/ci.yml`) corre `./gradlew build`. Su check se llama `compilar-y-testear` y es obligatorio para mergear.
 
+### Linter y cobertura
+
+`./gradlew build` también corre el linter y mide la cobertura. Si algo falla, el build falla, y con él el CI. Ver **Linter y cobertura** en [Decisiones técnicas](https://github.com/MartinaCousido/SnippetSearcher#decisiones-técnicas) de SnippetSearcher.
+
+| Herramienta | Qué revisa | Configuración |
+|---|---|---|
+| Checkstyle | Nombres y construcciones que suelen ser errores | `config/checkstyle/checkstyle.xml` |
+| PMD | Errores probables y malas prácticas | `config/pmd/ruleset.xml` (código) y `config/pmd/ruleset-test.xml` (tests) |
+| JaCoCo | Cobertura: mínimo **80 % de líneas**, sin contar `PrintScriptApplication` | `build.gradle` |
+
+Los reportes quedan en `build/reports/` (`checkstyle/`, `pmd/` y `jacoco/test/html/index.html`).
+
 ## Flujo de trabajo
 
 Igual que en SnippetSearcher: ramas `feature/*` desde `dev`, PR hacia `dev`, y de `dev` a `main`. Las correcciones de los PRs las hace Martina Cousido.
