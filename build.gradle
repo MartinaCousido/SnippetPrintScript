@@ -61,6 +61,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	// Ejecución en vivo por WebSocket (US-9, US-10). Ver "Ejecución en vivo" en Decisiones técnicas de SnippetSearcher.
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	testImplementation 'org.springframework.boot:spring-boot-starter-actuator-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
